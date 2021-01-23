@@ -1,6 +1,7 @@
 package com.orbitallcorp.hack21.cards.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,23 +46,30 @@ public class CardController {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
-		cardService.delete(id);
-		return ResponseEntity.status(200).build();
+		try {
+			cardService.delete(id);
+			return ResponseEntity.status(200).build();
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.status(404).build();
+		}
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<CardDTO> findById(@PathVariable Long id){
-		CardDTO dto = cardService.findById(id);
-		return ResponseEntity.status(200).body(dto);
+		try {
+			CardDTO dto = cardService.findById(id);
+			return ResponseEntity.status(200).body(dto);
+		} catch(NoSuchElementException e) {
+			return ResponseEntity.status(404).build();
+		}
 	}
 	
 	@GetMapping(value = "/paginationAndSorting")
 	public ResponseEntity<List<Card>> findAllPagination(
 			@RequestParam(defaultValue = "0") Integer pageNo, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
+            @RequestParam(defaultValue = "10") Integer pageSize){
 		
-		List<Card> list = cardService.findAllPagination(pageNo, pageSize, sortBy);
+		List<Card> list = cardService.findAllPagination(pageNo, pageSize);
 	
 		return ResponseEntity.status(200).body(list);
 	}

@@ -56,7 +56,7 @@ public class CardService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Card> findAllPagination(Integer pageNo, Integer pageSize, String sortBy){
+	public List<Card> findAllPagination(Integer pageNo, Integer pageSize){
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		
 		Page<Card> pagedResult = cardRepository.findAll(paging);
@@ -69,12 +69,12 @@ public class CardService {
 	}
 	
 	private void updateData(Optional<Card> card, CardDTO dto) {
-		card.get().setCardNumber(dto.getCardNumber());
-		card.get().setEmbossName(dto.getEmbossName());
-		card.get().setCustomerName(dto.getCustomerName());
-		card.get().setDocumentNumber(dto.getDocumentNumber());
-		card.get().setMotherName(dto.getMotherName());
-		card.get().setAddress(dto.getAddress());
-		card.get().setCity(dto.getCity());
+		card.get().setCardNumber((dto.getCardNumber() != "") ? dto.getCardNumber() : card.get().getCardNumber());
+		card.get().setEmbossName((dto.getEmbossName() != "") ? dto.getEmbossName() : card.get().getEmbossName());
+		card.get().setCustomerName((dto.getCustomerName() != "") ? dto.getCustomerName() : card.get().getCustomerName());
+		card.get().setDocumentNumber((dto.getDocumentNumber() != "") ? dto.getDocumentNumber() : card.get().getDocumentNumber());
+		card.get().setMotherName((dto.getMotherName() != "") ? dto.getMotherName() : card.get().getMotherName());
+		card.get().setAddress((dto.getAddress() != "") ? dto.getAddress() : card.get().getAddress());
+		card.get().setCity((dto.getCity() != "") ? dto.getCity() : card.get().getCity());
 	}
 }
