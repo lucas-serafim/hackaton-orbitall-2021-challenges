@@ -56,15 +56,15 @@ public class CardService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Card> findAllPagination(Integer pageNo, Integer pageSize){
+	public List<CardDTO> findAllPagination(Integer pageNo, Integer pageSize){
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		
 		Page<Card> pagedResult = cardRepository.findAll(paging);
         
         if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
+            return pagedResult.getContent().stream().map(x -> new CardDTO(x)).collect(Collectors.toList());
         } else {
-            return new ArrayList<Card>();
+            return new ArrayList<CardDTO>();
         }
 	}
 	

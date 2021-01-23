@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.orbitallcorp.hack21.cards.domains.Card;
 import com.orbitallcorp.hack21.cards.domains.dto.CardDTO;
 import com.orbitallcorp.hack21.cards.service.CardService;
 
@@ -65,11 +64,11 @@ public class CardController {
 	}
 	
 	@GetMapping(value = "/paginationAndSorting")
-	public ResponseEntity<List<Card>> findAllPagination(
+	public ResponseEntity<List<CardDTO>> findAllPagination(
 			@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize){
 		
-		List<Card> list = cardService.findAllPagination(pageNo, pageSize);
+		List<CardDTO> list = cardService.findAllPagination(pageNo, pageSize);
 	
 		return ResponseEntity.status(200).body(list);
 	}
