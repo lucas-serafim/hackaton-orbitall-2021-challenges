@@ -45,6 +45,12 @@ public class CardService {
 		cardRepository.deleteById(card.get().getId());
 	}
 	
+	@Transactional(readOnly = true)
+	public CardDTO findById(Long id) {
+		Optional<Card> card = cardRepository.findById(id);
+		return new CardDTO(card.get());
+	}
+	
 	private void updateData(Optional<Card> card, CardDTO dto) {
 		card.get().setCardNumber(dto.getCardNumber());
 		card.get().setEmbossName(dto.getEmbossName());

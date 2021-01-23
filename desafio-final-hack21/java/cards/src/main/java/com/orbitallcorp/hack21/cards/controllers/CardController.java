@@ -35,15 +35,21 @@ public class CardController {
 		return ResponseEntity.status(201).body(dto);
 	}
 	
-	@PutMapping
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<CardDTO> update(@PathVariable Long id, @RequestBody CardDTO dto){
 		dto = cardService.update(id, dto);
 		return ResponseEntity.status(200).body(dto);
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		cardService.delete(id);
 		return ResponseEntity.status(200).build();
+	}
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<CardDTO> findById(@PathVariable Long id){
+		CardDTO dto = cardService.findById(id);
+		return ResponseEntity.status(200).body(dto);
 	}
 }
