@@ -1,10 +1,14 @@
 package com.orbitallcorp.hack21.cards.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +53,19 @@ public class CardService {
 	public CardDTO findById(Long id) {
 		Optional<Card> card = cardRepository.findById(id);
 		return new CardDTO(card.get());
+	}
+	
+	@Transactional(readOnly = true)
+	public List<Card> findAllPagination(Integer pageNo, Integer pageSize, String sortBy){
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		
+		Page<Card> pagedResult = cardRepository.findAll(paging);
+        
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Card>();
+        }
 	}
 	
 	private void updateData(Optional<Card> card, CardDTO dto) {

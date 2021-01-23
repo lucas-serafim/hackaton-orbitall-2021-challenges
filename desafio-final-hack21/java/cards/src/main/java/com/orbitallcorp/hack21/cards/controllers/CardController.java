@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orbitallcorp.hack21.cards.domains.Card;
 import com.orbitallcorp.hack21.cards.domains.dto.CardDTO;
 import com.orbitallcorp.hack21.cards.service.CardService;
 
@@ -51,5 +53,16 @@ public class CardController {
 	public ResponseEntity<CardDTO> findById(@PathVariable Long id){
 		CardDTO dto = cardService.findById(id);
 		return ResponseEntity.status(200).body(dto);
+	}
+	
+	@GetMapping(value = "/paginationAndSorting")
+	public ResponseEntity<List<Card>> findAllPagination(
+			@RequestParam(defaultValue = "0") Integer pageNo, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy){
+		
+		List<Card> list = cardService.findAllPagination(pageNo, pageSize, sortBy);
+	
+		return ResponseEntity.status(200).body(list);
 	}
 }
