@@ -50,7 +50,19 @@ api.update = (request, response) => {
 }
 
 api.remove = (request, response) => {
-   
+   const id = request.params.id
+
+   neDB.remove({ _id: id }, {}, (exception, hadDeleted) => {
+      if (exception) {
+         messageError = { message: exception }
+         response.json(messageError)
+         response.status(exception.status | 501)
+      }
+
+      if (hadDeleted) {
+         response.status(200).json({ 'message': `Card ID:(${id}) has been deleted` })
+      }
+   })
 }
 
 api.findById = (request, response) => {
