@@ -79,4 +79,19 @@ api.findById = (request, response) => {
    })
 }
 
+api.paginationAndSorting = (request, response) => {
+   const page = request.query.page
+   const limit = request.query.limit
+
+   neDB.find({}).sort({ name: 1 }).skip(page).limit(limit).exec((exception, cards) => {
+      if (exception) {
+         messageError = { message: exception }
+         response.json(messageError)
+         response.status(exception.status | 501)
+      }
+
+      response.json(cards)
+   })
+}
+
 module.exports = api
