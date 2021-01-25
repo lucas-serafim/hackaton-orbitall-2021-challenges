@@ -66,7 +66,17 @@ api.remove = (request, response) => {
 }
 
 api.findById = (request, response) => {
+   const id = request.params.id
 
+   neDB.findOne({ _id: id }, (exception, card) => {
+      if (exception) {
+         messageError = { message: exception }
+         response.json(messageError)
+         response.status(exception.status | 501)
+      }
+
+      response.json(card)
+   })
 }
 
 module.exports = api
