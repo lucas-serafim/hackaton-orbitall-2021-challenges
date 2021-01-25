@@ -28,7 +28,25 @@ api.insert = (request, response) => {
 }
 
 api.update = (request, response) => {
-   
+   const id = request.params.id
+   const body = request.body
+
+   neDB.update({ _id: id }, body, (exception, hadUpdated) => {
+      if (exception) {
+         messageError = { message: exception }
+         response.json(messageError)
+         response.status(exception.status | 501)
+      }
+
+      if (hadUpdated) {
+         body._id = id
+         response.json(body)
+      } else {
+         messageError = { message: exception }
+         response.json(messageError)
+         response.status(exception.status | 501)
+      }
+   })
 }
 
 api.remove = (request, response) => {

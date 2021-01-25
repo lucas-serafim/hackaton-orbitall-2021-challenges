@@ -5,7 +5,7 @@ module.exports = (app) => {
         .get(api.findAll)
         .post(api.insert)
 
-   app.route('/:id')
+   app.route('/cards/:id')
          .put(api.update)
          .delete(api.remove)
          .get(api.findById)
