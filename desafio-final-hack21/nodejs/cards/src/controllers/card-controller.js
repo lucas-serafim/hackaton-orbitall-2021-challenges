@@ -14,7 +14,17 @@ api.findAll = (request, response) => {
 }
 
 api.insert = (request, response) => {
-   
+   const body = request.body
+
+   neDB.insert(body, (exception, card) => {
+      if (exception) {
+         messageError = { message: exception }
+         response.json(messageError)
+         response.status(exception.status | 501)
+      }
+
+      response.status(201).json(card)
+   })
 }
 
 api.update = (request, response) => {
